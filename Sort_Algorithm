@@ -1,0 +1,326 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Bubble Sort "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 21,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def bubble_sort(L):\n",
+    "    swap=True\n",
+    "    while swap:\n",
+    "        swap=False\n",
+    "        for j in range(len(L)-1):\n",
+    "            if L[j]>L[j+1]:\n",
+    "                #print(L)\n",
+    "                swap=True\n",
+    "                temp=L[j]\n",
+    "                L[j]=L[j+1]\n",
+    "                L[j+1]=temp\n",
+    "                "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 22,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "L=[5,4,2,1,6]\n",
+    "bubble_sort(L)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 23,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 4, 5, 6]"
+      ]
+     },
+     "execution_count": 23,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "L"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Comment on Bubble sort \n",
+    "\n",
+    "Bubble sort will take exact O(n**2) as time complexity.Because whereever the loop, we need to search and compare for len(L) times "
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Selection Sort"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def selection(L):\n",
+    "    subfix=0 \n",
+    "    while subfix<len(L):\n",
+    "        holder=subfix\n",
+    "        for i in range(subfix,len(L)):\n",
+    "            if L[i]<L[subfix]:\n",
+    "                holder=i \n",
+    "        L[subfix],L[holder]=L[holder],L[subfix]\n",
+    "        subfix+=1     "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 2,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "L=[5,4,2,1,6]\n",
+    "selection(L)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 4, 5, 6]"
+      ]
+     },
+     "execution_count": 3,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "L"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Comment on Selection Sort\n",
+    "\n",
+    "There is not any difference between Bubble sort and selection sort, they both have O(n**2) as time complexity. However, for selection sort, we are sure that L[:subfix] are sorted and L[subfix:] are all bigger than L[:subfix]. Thus, as we go further we are searching over less numbers. In general, that amortize the average time of searching."
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Merge sort"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 6,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### merge two sorted list \n",
+    "def merge(L1,L2):\n",
+    "    res=[]\n",
+    "    pointer=0\n",
+    "    while pointer<len(L1) and pointer<len(L2):\n",
+    "        if L1[pointer]<L2[pointer]:\n",
+    "            res.append(L1[pointer])\n",
+    "        else:\n",
+    "            res.append(L2[pointer])\n",
+    "        pointer+=1\n",
+    "        \n",
+    "    if pointer==len(L1):\n",
+    "        res=res+L2[pointer:]\n",
+    "    else:\n",
+    "        res=res+L2[pointer:]\n",
+    "    return res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 7,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1]"
+      ]
+     },
+     "execution_count": 7,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "L1=[1]\n",
+    "L2=[2]\n",
+    "merge(L1,L2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "Bug appears! The reson is that we cannot let L1 and L2 share the same pointer!!! In theory, we let the pointer points to the start of the lists, and we always expect to compare the starting two values in L1 and L2, however they have different paces moving forward so we need 2 different pointers to track the start of L1 and L2"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 10,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "### merge two sorted list \n",
+    "def merge(L1,L2):\n",
+    "    res=[]\n",
+    "    pointer1,pointer2=0,0\n",
+    "    while pointer1<len(L1) and pointer2<len(L2):\n",
+    "        if L1[pointer1]<L2[pointer2]:\n",
+    "            res.append(L1[pointer1])\n",
+    "            pointer1+=1\n",
+    "        else:\n",
+    "            res.append(L2[pointer2])\n",
+    "            pointer2+=1\n",
+    "        \n",
+    "    if pointer1==len(L1):\n",
+    "        res=res+L2[pointer2:]\n",
+    "    else:\n",
+    "        res=res+L1[pointer1:]\n",
+    "    return res"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 11,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2]"
+      ]
+     },
+     "execution_count": 11,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "L1=[1]\n",
+    "L2=[2]\n",
+    "merge(L1,L2)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "## Hooyah! It works!"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 14,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "def Mergesort(L):\n",
+    "    if L==[]:\n",
+    "        return L\n",
+    "    if len(L)==1:\n",
+    "        return L\n",
+    "    mid=len(L)//2\n",
+    "    L1=Mergesort(L[:mid])\n",
+    "    L2=Mergesort(L[mid:])\n",
+    "    return merge(L1,L2)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": 15,
+   "metadata": {},
+   "outputs": [
+    {
+     "data": {
+      "text/plain": [
+       "[1, 2, 4, 5, 6]"
+      ]
+     },
+     "execution_count": 15,
+     "metadata": {},
+     "output_type": "execute_result"
+    }
+   ],
+   "source": [
+    "L=[5,4,2,1,6]\n",
+    "Mergesort(L)"
+   ]
+  },
+  {
+   "cell_type": "markdown",
+   "metadata": {},
+   "source": [
+    "### Comment on Mergesort\n",
+    "\n",
+    "The total time complexity for Mergesort is n*logn. The key lies in merging two sorted lists. The time complexity is O(n). When merging L1(size N), L2(size N), we at most need to compare the number of longest list, then we copy exact 2*N numbers to a new list. That is O(n). \n",
+    "\n",
+    "In the mergesort algorithm, at iteration 1, L1 is n/2, L2 is n/2, we merge them, O(n) time. As going further, the scale of subproblem is half, but the total scale of problem keep the same, always O(n) (copying every number in the new list). \n",
+    "\n",
+    "In each iteration, O(n) time. There are log(N) iteration. Thus, the total time is n*log(n)"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "py36",
+   "language": "python",
+   "name": "py36"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.6.8"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 2
+}
